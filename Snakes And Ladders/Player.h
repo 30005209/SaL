@@ -31,7 +31,7 @@ public:
 	Player(vector<Tile>*);
 	~Player();
 
-	void takeTurn(void);
+	int takeTurn(void);
 	bool isWinner(void);
 	int getPos(void);
 };

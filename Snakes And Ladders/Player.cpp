@@ -12,11 +12,9 @@ Player::~Player()
 {
 }
 
-void Player::takeTurn(void)
+int Player::takeTurn(void)
 {
 	int result = Die::roll();
-
-	std::cout << "Rolled a " << result << std::endl;
 
 	if (pos->num + result <= (board->end()-1)->num)
 	{
@@ -28,6 +26,7 @@ void Player::takeTurn(void)
 		pos = board->begin() + pos->next->num-1;
 	}
 
+	return result;
 }
 
 bool Player::isWinner(void)
