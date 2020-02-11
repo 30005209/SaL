@@ -81,24 +81,26 @@ int main()
 	{
 		if (!two.isWinner())
 		{
-			one.takeTurn();
-			cout << "Player 1 is on tile: " << one.getPos() << endl;
+			cout << "John is on tile: " << one.getPos();
+			cout << " and rolled a " << one.takeTurn();
+			cout << " so is now on tile: " << one.getPos() << endl << endl;
 		}
 
 		if (!one.isWinner())
 		{
-			two.takeTurn();
-			cout << "Player 2 is on tile: " << two.getPos() << endl;
+			cout << "Jane is on tile: " << two.getPos();
+			cout << " and rolled a " << two.takeTurn();
+			cout << " so is now on tile: " << two.getPos() << endl << endl;
 		}
 	}
 
 	if (one.isWinner())
 	{
-		cout << "Player one has won " << endl;
+		cout << "John has won " << endl;
 	}
 	else if (two.isWinner())
 	{
-		cout << "Player two has won " << endl;
+		cout << "Jane has won " << endl;
 	}
 
 
