@@ -1,0 +1,13 @@
+Snakes & Ladders
+Board size: 25
+Start: 1
+End: 25
+x3 Snakes
+	H13, T2
+	H19, T6
+	H24, T3
+x3 Ladders
+	B4,	T17 
+	B7,	T18
+	B15,T22 
+D6 die

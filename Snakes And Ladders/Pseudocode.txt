@@ -1,0 +1,21 @@
+struct Tile
+	int self
+	Tile* next;
+
+Player
+	public:
+	constructor(string)
+	Tile*
+	private:
+
+Die
+	public:
+	contructor
+		size = 6
+	
+	INT size
+	private:
+
+roll(Die)
+
+CHANGE TO VECTORS NOT CLASSES
