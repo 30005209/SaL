@@ -34,10 +34,7 @@ int main()
 		}
 		it++;
 	}
-
-	Player A(BOARD_SIZE);
-	cout << A.getPos();
-
+	
 
 	//Set the Snakes
 	board.at(12).next = &board.at(1);
