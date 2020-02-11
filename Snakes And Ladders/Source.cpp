@@ -85,11 +85,11 @@ int main()
 			cout << "Player 1 is on tile: " << one.getPos() << endl;
 		}
 
-		//if (!one.isWinner())
-		//{
-		//	two.takeTurn();
-		//	cout << "Player 2 is on tile: " << two.getPos() << endl;
-		//}
+		if (!one.isWinner())
+		{
+			two.takeTurn();
+			cout << "Player 2 is on tile: " << two.getPos() << endl;
+		}
 	}
 
 	if (one.isWinner())

@@ -25,7 +25,7 @@ void Player::takeTurn(void)
 	
 	if (pos->link)
 	{
-		std::cout << "LINK" << std::endl;
+		pos = board->begin() + pos->next->num-1;
 	}
 
 }
