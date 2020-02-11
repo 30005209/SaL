@@ -14,12 +14,25 @@ Player::~Player()
 
 void Player::takeTurn(void)
 {
-	pos = pos + Die::roll();
+	int result = Die::roll();
+
+	std::cout << "Rolled a " << result << std::endl;
+
+	if (pos->num + result <= (board->end()-1)->num)
+	{
+		pos += result;
+	}
+	
+	if (pos->link)
+	{
+		std::cout << "LINK" << std::endl;
+	}
+
 }
 
 bool Player::isWinner(void)
 {
-	return pos == board->end();
+	return pos->num == (board->end()-1)->num;
 }
 
 int Player::getPos(void)
