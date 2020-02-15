@@ -1,10 +1,13 @@
 #include "Player.h"
 
 
-Player::Player(vector<Tile>* board)
+Player::Player(vector<Tile>* board, Console* console)
 {
 	this->board = board;
 	this->pos = board->begin();
+
+	this->con = console;
+	decideColourScheme();
 }
 
 
@@ -44,4 +47,29 @@ int Player::getPos(void)
 {
 	//Show the number of the tile they are on
 	return pos->num;
+}
+
+Console::COLOUR Player::getFore(void)
+{
+	return foreCol;
+}
+
+void Player::decideColourScheme(void)
+{
+	this->foreCol = Console::COLOUR(Die::roll(15));
+}
+
+void Player::decideColourScheme(Console::COLOUR fore)
+{
+	this->foreCol = fore;
+}
+
+void Player::setName(string name)
+{
+	this->name = name;
+}
+
+string Player::getName(void)
+{
+	return name;
 }

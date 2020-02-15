@@ -1,8 +1,10 @@
 #pragma once
 #include "Die.h"
 #include <iostream>
+#include "console.h"
 
 using std::vector;
+using std::string;
 
 //Tiles make up the game board
 struct Tile
@@ -21,15 +23,29 @@ private:
 	//The board is a collection of tiles
 	vector<Tile>* board;
 
+	//The console the player is playing on
+	Console* con;
+
+	//The player has a colour scheme
+	Console::COLOUR foreCol;
+
+	//The player's name
+	string name;
+
 public:
 
-	//Cannot have a player without a board so a board is needed to construct
-	Player(vector<Tile>*);	
+	//Cannot have a player without a board or a console
+	Player(vector<Tile>*, Console*);	
 	~Player();
 
 	//Taking a turn
 	int takeTurn(void);
 	bool isWinner(void);
 	int getPos(void);
+	Console::COLOUR getFore(void);
+	void decideColourScheme(void);
+	void decideColourScheme(Console::COLOUR);
+	void setName(string);
+	string getName(void);
 };
 

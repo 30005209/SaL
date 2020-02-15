@@ -9,10 +9,15 @@ using std::cout;
 using std::endl;
 using std::vector;
 
-bool gameIsWon(Player, Player);
+bool gameIsWon(Player*, Player*);
+void beGameMaster(void);
+void bePlayer(Player*);
+
 
 int main()
 {
+	static Console con;
+
 	const int BOARD_SIZE = 25;
 	vector<Tile> board;
 
@@ -36,38 +41,43 @@ int main()
 	
 
 	//Set the player positions at start
-	Player one(&board), two(&board);
+	Player one(&board, &con), two(&board, &con);
+
 
 	//While neither player has won keep playing
-	while (!gameIsWon(one, two))
+	while (!gameIsWon(&one, &two))
 	{
 		//So long as player two hasn't won - player 2 take a turn
 		if (!two.isWinner())
 		{
-			cout << "John is on tile: " << one.getPos();
-			cout << " and rolled a " << one.takeTurn();
-			cout << " so is now on tile: " << one.getPos() << endl << endl;
+			bePlayer(&one);
+			cout << one.getName() << " is on tile " << one.getPos()
+				<< " and rolled a " << one.takeTurn()
+				<< " so is now on tile: " << one.getPos() << endl;
 		}
 
 		//So long as player two hasn't won - take a turn
 		if (!one.isWinner())
 		{
-			cout << "Jane is on tile: " << two.getPos();
-			cout << " and rolled a " << two.takeTurn();
-			cout << " so is now on tile: " << two.getPos() << endl << endl;
+			bePlayer(&two);
+			cout << two.getName() << " is on tile " << two.getPos()
+				<< " and rolled a " << two.takeTurn()
+				<< " so is now on tile: " << two.getPos() << endl;
 		}
 	}
+
+	beGameMaster();
 
 	//If player one won - declare them the victor
 	if (one.isWinner())
 	{
-		cout << "John has won " << endl;
+		cout << one.getName() << " won!" << endl;
 	}
 
 	//Otherwise if player two has won - declare them the victor
 	else if (two.isWinner())
 	{
-		cout << "Jane has won " << endl;
+		cout << two.getName() << " won!" << endl;
 	}
 
 
@@ -79,13 +89,13 @@ int main()
 
 
 //Check if either player has won
-bool gameIsWon(Player a, Player b)
+bool gameIsWon(Player* a, Player* b)
 {
-	if (a.isWinner())
+	if (a->isWinner())
 	{
 		return true;
 	}
-	else if (b.isWinner())
+	else if (b->isWinner())
 	{
 		return true;
 	}
@@ -94,4 +104,18 @@ bool gameIsWon(Player a, Player b)
 	{
 		return false;
 	}
+}
+
+void beGameMaster(void)
+{
+	static Console con;
+	
+	con.setColour(Console::YELLOW, Console::BLACK);
+}
+
+void bePlayer(Player* player)
+{
+	static Console con;
+
+	con.setColour(player->getFore());
 }
