@@ -2,6 +2,7 @@
 #include "Die.h"
 #include "Player.h"
 #include <vector>
+#include "console.h"
 
 using std::cin;
 using std::cout;
