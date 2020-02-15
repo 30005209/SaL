@@ -43,6 +43,10 @@ int main()
 	//Set the player positions at start
 	Player one(&board, &con), two(&board, &con);
 
+	while (one.getFore() == two.getFore())
+	{
+		one.decideColourScheme();
+	}
 
 	//While neither player has won keep playing
 	while (!gameIsWon(&one, &two))
@@ -110,7 +114,7 @@ void beGameMaster(void)
 {
 	static Console con;
 	
-	con.setColour(Console::YELLOW, Console::BLACK);
+	con.setColour(Console::BLACK, Console::YELLOW);
 }
 
 void bePlayer(Player* player)

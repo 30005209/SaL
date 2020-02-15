@@ -56,7 +56,7 @@ Console::COLOUR Player::getFore(void)
 
 void Player::decideColourScheme(void)
 {
-	this->foreCol = Console::COLOUR(Die::roll(15));
+	this->foreCol = Console::COLOUR(Die::roll(6)+8);
 }
 
 void Player::decideColourScheme(Console::COLOUR fore)
