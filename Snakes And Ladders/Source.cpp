@@ -8,22 +8,7 @@ using std::cout;
 using std::endl;
 using std::vector;
 
-bool gameIsWon(Player a, Player b) 
-{
-	if (a.isWinner())
-	{
-		return true;
-	}
-	else if (b.isWinner())
-	{
-		return true;
-	}
-	else
-
-	{
-		return false;
-	}
-}
+bool gameIsWon(Player, Player);
 
 int main()
 {
@@ -35,6 +20,8 @@ int main()
 	{
 		board.push_back({ i, NULL });
 	}	
+
+	//When setting snakes/ladders the link number is the tile -1
 
 	//Set the Snakes
 	board.at(12).link = 1;
@@ -50,8 +37,10 @@ int main()
 	//Set the player positions at start
 	Player one(&board), two(&board);
 
+	//While neither player has won keep playing
 	while (!gameIsWon(one, two))
 	{
+		//So long as player two hasn't won - player 2 take a turn
 		if (!two.isWinner())
 		{
 			cout << "John is on tile: " << one.getPos();
@@ -59,6 +48,7 @@ int main()
 			cout << " so is now on tile: " << one.getPos() << endl << endl;
 		}
 
+		//So long as player two hasn't won - take a turn
 		if (!one.isWinner())
 		{
 			cout << "Jane is on tile: " << two.getPos();
@@ -67,10 +57,13 @@ int main()
 		}
 	}
 
+	//If player one won - declare them the victor
 	if (one.isWinner())
 	{
 		cout << "John has won " << endl;
 	}
+
+	//Otherwise if player two has won - declare them the victor
 	else if (two.isWinner())
 	{
 		cout << "Jane has won " << endl;
@@ -80,4 +73,24 @@ int main()
 	cin.ignore();
 	cin.get();
 	return 0;
+}
+
+
+
+//Check if either player has won
+bool gameIsWon(Player a, Player b)
+{
+	if (a.isWinner())
+	{
+		return true;
+	}
+	else if (b.isWinner())
+	{
+		return true;
+	}
+	else
+
+	{
+		return false;
+	}
 }
