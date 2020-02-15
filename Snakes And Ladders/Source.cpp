@@ -43,6 +43,7 @@ int main()
 	//Set the player positions at start
 	Player one(&board, &con), two(&board, &con);
 
+	//If players have the same colours change the first player's colour
 	while (one.getFore() == two.getFore())
 	{
 		one.decideColourScheme();
