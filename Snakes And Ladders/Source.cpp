@@ -34,44 +34,17 @@ int main()
 	for (int i = 1; i <= BOARD_SIZE; i++)
 	{
 		board.push_back({ i, NULL });
-	}
-
-	//Set the next to self
-	vector<Tile>::iterator it = board.begin();
-	int i = 0;
-	while (it != board.end())
-	{
-		if (i >= BOARD_SIZE)
-		{
-			it->next = NULL;
-		}
-		else
-		{
-			it->next = &board.at(i++);
-		}
-		it++;
-	}
-	
+	}	
 
 	//Set the Snakes
-	board.at(12).next = &board.at(1);
-	board.at(12).link = true;
-
-	board.at(18).next = &board.at(5);
-	board.at(18).link = true;
-
-	board.at(23).next = &board.at(2);
-	board.at(23).link = true;
+	board.at(12).link = 1;
+	board.at(18).link = 5;
+	board.at(23).link = 2;
 
 	//Set the Ladders
-	board.at(3).next = &board.at(16);
-	board.at(3).link = true;
-
-	board.at(6).next = &board.at(17);
-	board.at(6).link = true;
-
-	board.at(14).next = &board.at(21);
-	board.at(14).link = true;
+	board.at(3).link = 16;
+	board.at(6).link = 18;
+	board.at(14).link = 21;
 	
 
 	//Set the player positions at start
