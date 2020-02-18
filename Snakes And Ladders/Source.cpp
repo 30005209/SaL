@@ -24,7 +24,7 @@ int main()
 	static Console con;
 
 	const int BOARD_SIZE = 25;
-	static vector<Tile> board;
+	vector<Tile> board;
 
 	//Set the board numbers
 	for (int i = 1; i <= BOARD_SIZE; i++)
