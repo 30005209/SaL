@@ -16,6 +16,7 @@ void beGameMaster(void);
 void bePlayer(Player*);
 void randomSlow(void);
 void typeWrite(string);
+void setLink(int, int, vector<Tile>&);
 
 
 int main()
@@ -23,7 +24,7 @@ int main()
 	static Console con;
 
 	const int BOARD_SIZE = 25;
-	vector<Tile> board;
+	static vector<Tile> board;
 
 	//Set the board numbers
 	for (int i = 1; i <= BOARD_SIZE; i++)
@@ -31,17 +32,15 @@ int main()
 		board.push_back({ i, NULL });
 	}
 
-	//When setting snakes/ladders the link number is the tile -1
-
 	//Set the Snakes
-	board.at(12).link = 1;
-	board.at(18).link = 5;
-	board.at(23).link = 2;
+	setLink(13, 2, board);
+	setLink(19, 6, board);
+	setLink(24, 3, board);
 
 	//Set the Ladders
-	board.at(3).link = 16;
-	board.at(6).link = 18;
-	board.at(14).link = 21;
+	setLink(4, 17, board);
+	setLink(7, 19, board);
+	setLink(15, 22, board);
 
 
 	//Set the player positions at start
@@ -70,7 +69,6 @@ int main()
 
 		two.setName(name);
 	}
-
 
 	//While neither player has won keep playing
 	while (!gameIsWon(&one, &two))
@@ -113,8 +111,6 @@ int main()
 	cin.get();
 	return 0;
 }
-
-
 
 //Check if either player has won
 bool gameIsWon(Player* a, Player* b)
@@ -169,3 +165,7 @@ void typeWrite(string text)
 	}
 }
 
+void setLink(int source, int linked, vector<Tile>& board)
+{
+	board.at(source-1).link = linked - 1;
+}
