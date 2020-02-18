@@ -3,15 +3,19 @@
 #include "Player.h"
 #include <vector>
 #include "console.h"
+#include <chrono>
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
+using std::to_string;
 
 bool gameIsWon(Player*, Player*);
 void beGameMaster(void);
 void bePlayer(Player*);
+void randomSlow(void);
+void typeWrite(string);
 
 
 int main()
@@ -65,46 +69,45 @@ int main()
 		std::cin >> name;
 
 		two.setName(name);
-
 	}
 
 
 	//While neither player has won keep playing
 	while (!gameIsWon(&one, &two))
-	{
+	{		
 		//So long as player two hasn't won - player 2 take a turn
 		if (!two.isWinner())
 		{
 			bePlayer(&one);
-			cout << one.getName() << " is on tile " << one.getPos()
-				<< " and rolled a " << one.takeTurn()
-				<< " so is now on tile: " << one.getPos() << endl;
+			typeWrite(one.getName() + " is on tile " + to_string(one.getPos()));
+			typeWrite(" and rolled a " + to_string(one.takeTurn()));
+			typeWrite(" so is now on tile: " + to_string(one.getPos()) + "\n");
 		}
 
 		//So long as player two hasn't won - take a turn
 		if (!one.isWinner())
 		{
 			bePlayer(&two);
-			cout << two.getName() << " is on tile " << two.getPos()
-				<< " and rolled a " << two.takeTurn()
-				<< " so is now on tile: " << two.getPos() << endl;
+			typeWrite(two.getName() + " is on tile " + to_string(two.getPos()));
+			typeWrite(" and rolled a " + to_string(two.takeTurn()));
+			typeWrite(" so is now on tile: " + to_string(two.getPos()) + "\n");
 		}
 	}
 
-	beGameMaster();
 
 	//If player one won - declare them the victor
 	if (one.isWinner())
 	{
-		cout << one.getName() << " won!" << endl;
+		bePlayer(&one);
+		typeWrite("And the winner is..." + one.getName());
 	}
 
 	//Otherwise if player two has won - declare them the victor
 	else if (two.isWinner())
 	{
-		cout << two.getName() << " won!" << endl;
+		bePlayer(&two);
+		typeWrite("And the winner is..." + two.getName());
 	}
-
 
 	cin.ignore();
 	cin.get();
@@ -144,3 +147,25 @@ void bePlayer(Player* player)
 
 	con.setColour(player->getFore());
 }
+
+
+void randomSlow(void)
+{
+	static std::random_device rd;
+	static std::mt19937 mersenne(rd());
+	static std::uniform_int_distribution<int> dist(50, 80);
+	dist(mersenne);
+
+	Sleep(dist(mersenne));
+
+}
+
+void typeWrite(string text)
+{
+	for (int i = 0; i < text.length(); i++)
+	{
+		randomSlow();
+		cout << text[i];
+	}
+}
+
