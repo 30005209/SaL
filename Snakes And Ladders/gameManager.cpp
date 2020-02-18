@@ -47,7 +47,7 @@ void gameManager::bePlayer(Player* player)
 
 void gameManager::randomSlow(void)
 {
-	Sleep(Die::roll(20) + 50);
+	Sleep(Die::roll(getSpeedVar()) + getSpeedBase());
 }
 
 void gameManager::typeWrite(string text)
@@ -62,4 +62,22 @@ void gameManager::typeWrite(string text)
 void gameManager::setLink(int source, int linked, vector<Tile>& board)
 {
 	board.at(source - 1).link = linked - 1;
+}
+
+int gameManager::getSpeedBase(void)
+{
+	return gameSpeedBase;
+}
+
+int gameManager::getSpeedVar(void)
+{
+	return gameSpeedVar;
+}
+
+void gameManager::increaseSpeed(void)
+{
+	if (getSpeedBase() > 40)
+	{
+		gameSpeedBase -= 40;
+	}
 }

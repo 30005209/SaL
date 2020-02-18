@@ -1,1 +1,1 @@
-Dog with:  10
+Monkey with:  20

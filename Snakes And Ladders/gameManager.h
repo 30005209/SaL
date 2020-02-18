@@ -4,6 +4,11 @@
 
 class gameManager
 {
+private:
+
+	int gameSpeedBase = 90;
+	int gameSpeedVar = 30;
+
 public:
 	gameManager();
 	~gameManager();
@@ -14,6 +19,9 @@ public:
 	void randomSlow(void);
 	void typeWrite(string);
 	void setLink(int, int, vector<Tile>&);
+	int getSpeedBase(void);
+	int getSpeedVar(void);
+	void increaseSpeed(void);
 
 };
 

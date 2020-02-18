@@ -22,6 +22,10 @@ int main()
 	const int BOARD_SIZE = 25;
 	vector<Tile> board;
 
+	//Set the title to be Snakes and Ladders
+	con.setWindowTitle("Snakes and Ladders");
+	con.setWindowPosition(0, 0);
+	con.setWindowSize(150, 500);
 
 	//Set the board numbers
 	for (int i = 1; i <= BOARD_SIZE; i++)
@@ -97,14 +101,17 @@ int main()
 			Sleep(Die::roll(100) + 500);
 		}
 
-		if (one.getTurns() > 10)
+		//Check if the game has been going on for longer than 4 turns
+		//then on alternate turns speed up within limit
+		if (one.getTurns() > 4 && one.getTurns() %2)
 		{
-
+			gM.increaseSpeed();
 		}
 
-
+		//Leave time to read the result
 		Sleep(500);
 
+		//Clear the console ready for next round
 		con.clear();
 		}
 
@@ -114,17 +121,16 @@ int main()
 		outFile.open("Winner.txt");
 		outFile << one.getName() << " with:  " << one.getTurns();
 		gM.bePlayer(&one);
-		gM.typeWrite("And the winner is..." + one.getName() + "(" + to_string(one.getTurns()) + ")");
+		gM.typeWrite("And the winner is..." + one.getName() + " in " + to_string(one.getTurns()) + " turns");
 	}
 
 	//Otherwise if player two has won - declare them the victor
 	else if (two.isWinner())
 	{
-
 		outFile.open("Winner.txt");
 		outFile << two.getName() << " with:  " << two.getTurns();
 		gM.bePlayer(&two);
-		gM.typeWrite("And the winner is..." + two.getName() + "(" + to_string(two.getTurns()) + ")");
+		gM.typeWrite("And the winner is..." + two.getName() + " in " + to_string(two.getTurns()) + " turns");
 	}
 
 	cin.ignore();
