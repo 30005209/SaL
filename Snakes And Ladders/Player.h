@@ -32,6 +32,9 @@ private:
 	//The player's name
 	string name = "unset";
 
+	//Number of turns taken
+	int turnNo;
+
 public:
 
 	//Cannot have a player without a board or a console
@@ -47,5 +50,6 @@ public:
 	void decideColourScheme(Console::COLOUR);
 	void setName(string);
 	string getName(void);
+	int getTurns(void);
 };
 
