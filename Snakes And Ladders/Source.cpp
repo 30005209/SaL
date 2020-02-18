@@ -25,7 +25,7 @@ int main()
 	for (int i = 1; i <= BOARD_SIZE; i++)
 	{
 		board.push_back({ i, NULL });
-	}	
+	}
 
 	//When setting snakes/ladders the link number is the tile -1
 
@@ -38,7 +38,7 @@ int main()
 	board.at(3).link = 16;
 	board.at(6).link = 18;
 	board.at(14).link = 21;
-	
+
 
 	//Set the player positions at start
 	Player one(&board, &con), two(&board, &con);
@@ -48,6 +48,26 @@ int main()
 	{
 		one.decideColourScheme();
 	}
+	
+	//Set names
+	while (one.getName() == "unset" || one.getName() == two.getName())
+	{
+		string name;
+
+		bePlayer(&one);
+
+		std::cin >> name;
+
+		one.setName(name);
+
+		bePlayer(&two);
+
+		std::cin >> name;
+
+		two.setName(name);
+
+	}
+
 
 	//While neither player has won keep playing
 	while (!gameIsWon(&one, &two))
