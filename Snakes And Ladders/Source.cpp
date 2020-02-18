@@ -5,6 +5,7 @@
 #include "console.h"
 #include <chrono>
 #include <fstream>
+#include "gameManager.h"
 
 using std::cin;
 using std::cout;
@@ -12,18 +13,11 @@ using std::endl;
 using std::vector;
 using std::to_string;
 
-bool gameIsWon(Player*, Player*);
-void beGameMaster(void);
-void bePlayer(Player*);
-void randomSlow(void);
-void typeWrite(string);
-void setLink(int, int, vector<Tile>&);
-
-
 int main()
 {
 	std::ifstream inFile;
 	std::ofstream outFile;
+	gameManager gM;
 	static Console con;
 	const int BOARD_SIZE = 25;
 	vector<Tile> board;
@@ -36,14 +30,14 @@ int main()
 	}
 
 	//Set the Snakes
-	setLink(13, 2, board);
-	setLink(19, 6, board);
-	setLink(24, 3, board);
+	gM.setLink(13, 2, board);
+	gM.setLink(19, 6, board);
+	gM.setLink(24, 3, board);
 
 	//Set the Ladders
-	setLink(4, 17, board);
-	setLink(7, 19, board);
-	setLink(15, 22, board);
+	gM.setLink(4, 17, board);
+	gM.setLink(7, 19, board);
+	gM.setLink(15, 22, board);
 
 
 	//Set the player positions at start
@@ -60,53 +54,67 @@ int main()
 	{
 		string name;
 
-		bePlayer(&one);
+		gM.bePlayer(&one);
 
 		std::cin >> name;
 
 		one.setName(name);
 
-		bePlayer(&two);
+		gM.bePlayer(&two);
 
 		std::cin >> name;
 
 		two.setName(name);
+
+		con.clear();
 	}
 
+
 	//While neither player has won keep playing
-	while (!gameIsWon(&one, &two))
+	while (!gM.gameIsWon(&one, &two))
 	{		
+		gM.beGameMaster();
+		gM.typeWrite(one.getName() + " Vs " + two.getName() + " Round: " + to_string(one.getTurns()+1) + "\n");
+
 		//So long as player two hasn't won - player 2 take a turn
 		if (!two.isWinner())
 		{
-			bePlayer(&one);
-			typeWrite(one.getName() + " is on tile " + to_string(one.getPos()));
-			typeWrite(" and rolled a " + to_string(one.takeTurn()));
-			typeWrite(" so is now on tile: " + to_string(one.getPos()) + "\n");
+			gM.bePlayer(&one);
+			gM.typeWrite(one.getName() + " is on tile " + to_string(one.getPos()));
+			gM.typeWrite(" and rolled a " + to_string(one.takeTurn()));
+			gM.typeWrite(" so is now on tile: " + to_string(one.getPos()));
+			Sleep(Die::roll(100) + 500);
+			cout << endl;
 		}
 
 		//So long as player two hasn't won - take a turn
 		if (!one.isWinner())
 		{
-			bePlayer(&two);
-			typeWrite(two.getName() + " is on tile " + to_string(two.getPos()));
-			typeWrite(" and rolled a " + to_string(two.takeTurn()));
-			typeWrite(" so is now on tile: " + to_string(two.getPos()) + "\n");
+			gM.bePlayer(&two);
+			gM.typeWrite(two.getName() + " is on tile " + to_string(two.getPos()));
+			gM.typeWrite(" and rolled a "+ to_string(two.takeTurn()));
+			gM.typeWrite(" so is now on tile: " + to_string(two.getPos()));
+			Sleep(Die::roll(100) + 500);
 		}
 
 		if (one.getTurns() > 10)
 		{
 
 		}
-	}
+
+
+		Sleep(500);
+
+		con.clear();
+		}
 
 	//If player one won - declare them the victor
 	if (one.isWinner())
 	{
 		outFile.open("Winner.txt");
 		outFile << one.getName() << " with:  " << one.getTurns();
-		bePlayer(&one);
-		typeWrite("And the winner is..." + one.getName() + "(" + to_string(one.getTurns()) + ")");
+		gM.bePlayer(&one);
+		gM.typeWrite("And the winner is..." + one.getName() + "(" + to_string(one.getTurns()) + ")");
 	}
 
 	//Otherwise if player two has won - declare them the victor
@@ -115,70 +123,11 @@ int main()
 
 		outFile.open("Winner.txt");
 		outFile << two.getName() << " with:  " << two.getTurns();
-		bePlayer(&two);
-		typeWrite("And the winner is..." + two.getName() + "(" + to_string(two.getTurns()) + ")");
+		gM.bePlayer(&two);
+		gM.typeWrite("And the winner is..." + two.getName() + "(" + to_string(two.getTurns()) + ")");
 	}
 
 	cin.ignore();
 	cin.get();
 	return 0;
-}
-
-//Check if either player has won
-bool gameIsWon(Player* a, Player* b)
-{
-	if (a->isWinner())
-	{
-		return true;
-	}
-	else if (b->isWinner())
-	{
-		return true;
-	}
-	else
-
-	{
-		return false;
-	}
-}
-
-void beGameMaster(void)
-{
-	static Console con;
-	
-	con.setColour(Console::BLACK, Console::YELLOW);
-}
-
-void bePlayer(Player* player)
-{
-	static Console con;
-
-	con.setColour(player->getFore());
-}
-
-
-void randomSlow(void)
-{
-
-	static std::random_device rd;
-	static std::mt19937 mersenne(rd());
-	static std::uniform_int_distribution<int> dist(50, 60);
-	dist(mersenne);
-
-	Sleep(dist(mersenne));
-
-}
-
-void typeWrite(string text)
-{
-	for (int i = 0; i < text.length(); i++)
-	{
-		randomSlow();
-		cout << text[i];
-	}
-}
-
-void setLink(int source, int linked, vector<Tile>& board)
-{
-	board.at(source-1).link = linked - 1;
 }
