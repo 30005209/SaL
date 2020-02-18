@@ -30,7 +30,7 @@ private:
 	Console::COLOUR foreCol;
 
 	//The player's name
-	string name;
+	string name = "unset";
 
 public:
 
