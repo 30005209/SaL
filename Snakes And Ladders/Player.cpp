@@ -6,6 +6,9 @@ Player::Player(vector<Tile>* board, Console* console)
 	this->board = board;
 	this->pos = board->begin();
 
+	this->turnNo = 0;
+	this->name = "unset";
+
 	this->con = console;
 	decideColourScheme();
 }
@@ -32,6 +35,8 @@ int Player::takeTurn(void)
 	{
 		pos = board->begin() + pos->link;
 	}
+
+	turnNo++;
 
 	//Return the dice roll
 	return result;
@@ -72,4 +77,9 @@ void Player::setName(string name)
 string Player::getName(void)
 {
 	return name;
+}
+
+int Player::getTurns(void)
+{
+	return turnNo;
 }

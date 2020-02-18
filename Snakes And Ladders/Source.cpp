@@ -4,6 +4,7 @@
 #include <vector>
 #include "console.h"
 #include <chrono>
+#include <fstream>
 
 using std::cin;
 using std::cout;
@@ -21,10 +22,12 @@ void setLink(int, int, vector<Tile>&);
 
 int main()
 {
+	std::ifstream inFile;
+	std::ofstream outFile;
 	static Console con;
-
 	const int BOARD_SIZE = 25;
-	static vector<Tile> board;
+	vector<Tile> board;
+
 
 	//Set the board numbers
 	for (int i = 1; i <= BOARD_SIZE; i++)
@@ -90,21 +93,30 @@ int main()
 			typeWrite(" and rolled a " + to_string(two.takeTurn()));
 			typeWrite(" so is now on tile: " + to_string(two.getPos()) + "\n");
 		}
-	}
 
+		if (one.getTurns() > 10)
+		{
+
+		}
+	}
 
 	//If player one won - declare them the victor
 	if (one.isWinner())
 	{
+		outFile.open("Winner.txt");
+		outFile << one.getName() << " with:  " << one.getTurns();
 		bePlayer(&one);
-		typeWrite("And the winner is..." + one.getName());
+		typeWrite("And the winner is..." + one.getName() + "(" + to_string(one.getTurns()) + ")");
 	}
 
 	//Otherwise if player two has won - declare them the victor
 	else if (two.isWinner())
 	{
+
+		outFile.open("Winner.txt");
+		outFile << two.getName() << " with:  " << two.getTurns();
 		bePlayer(&two);
-		typeWrite("And the winner is..." + two.getName());
+		typeWrite("And the winner is..." + two.getName() + "(" + to_string(two.getTurns()) + ")");
 	}
 
 	cin.ignore();
@@ -147,9 +159,10 @@ void bePlayer(Player* player)
 
 void randomSlow(void)
 {
+
 	static std::random_device rd;
 	static std::mt19937 mersenne(rd());
-	static std::uniform_int_distribution<int> dist(50, 80);
+	static std::uniform_int_distribution<int> dist(50, 60);
 	dist(mersenne);
 
 	Sleep(dist(mersenne));
