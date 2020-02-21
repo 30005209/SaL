@@ -21,15 +21,11 @@ int main()
 	static Console con;
 	const int BOARD_SIZE = 25;
 	vector<Tile> board;
-
-	//Set the colourscheme to gameMaster
-
-	gM.beGameMaster();
-
+	
 	//Set the title to be Snakes and Ladders
 	con.setWindowTitle("Snakes and Ladders");
 	con.setWindowPosition(0, 0);
-	con.setWindowSize(150, 500);
+	con.setWindowSize(150, 750);
 
 	//Set the board numbers
 	for (int i = 1; i <= BOARD_SIZE; i++)
@@ -56,19 +52,34 @@ int main()
 	{
 		one.decideColourScheme();
 	}
-	
+
 	//Set names
 	while (one.getName() == "unset" || one.getName() == two.getName())
 	{
+
+		gM.beGameMaster();
+
+		gM.typeWrite("What would you like to be called Player 1:");
+
 		string name;
 
 		gM.bePlayer(&one);
+
+		gM.typeWrite(" ");
 
 		std::cin >> name;
 
 		one.setName(name);
 
+
+		gM.beGameMaster();
+
+		gM.typeWrite("What would you like to be called Player 2:");
+
+
 		gM.bePlayer(&two);
+
+		gM.typeWrite(" ");
 
 		std::cin >> name;
 
@@ -160,19 +171,23 @@ int main()
 			Sleep(Die::roll(100) + 500);
 		}
 
-		//Check if the game has been going on for longer than 4 turns
-		//then on alternate turns speed up within limit
-		if (one.getTurns() > 4 && one.getTurns() %2)
-		{
-			gM.increaseSpeed();
-		}
 
 		//Leave time to read the result
 		Sleep(500);
 
 		//Clear the console ready for next round
 		con.clear();
+		
+		
+		//Check if the game has been going on for longer than 4 turns
+		//then on alternate turns speed up within limit
+		if (one.getTurns() > 4 && one.getTurns() %2)
+		{
+			gM.beGameMaster();
+			gM.typeWrite("SPEED UP ! \n");
+			gM.increaseSpeed();
 		}
+	}
 
 	//If player one won - declare them the victor
 	if (one.isWinner())
