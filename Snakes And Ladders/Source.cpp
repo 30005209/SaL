@@ -138,18 +138,60 @@ int main()
 	}
 
 	gM.beGameMaster();
-	gM.typeWrite("Now we're all set - let's begin...");
+	gM.typeWrite("Now we're all set - let's begin...by seeing who goes first");
 	
 	Sleep(Die::roll(100) + 500);
-
 
 	con.setColour(Console::BLACK, Console::BLACK);
 	con.clear();
 	gM.beGameMaster();
+	
+	
+	int nOne = 0;
+	int nTwo = 0;
+	do
+	{
+		nOne = Die::roll();
+		gM.bePlayer(&one);
+		gM.typeWrite(one.getName() + " you got a " + to_string(nOne) + "\n");
+
+		nTwo = Die::roll();
+		gM.bePlayer(&two);
+		gM.typeWrite(two.getName() + " you got a " + to_string(nTwo) +  "\n");
+
+		if (nOne == nTwo)
+		{
+			Sleep(Die::roll(100) + 500);
+			con.clear();
+			gM.beGameMaster();
+			gM.typeWrite("Lets try that again..\n");
+		}
+
+		if (nTwo > nOne)
+		{
+			string nameSwap = two.getName();
+			Console::COLOUR colourSwap = two.getFore();
+			
+			two.setName(one.getName());
+			two.decideColourScheme(one.getFore());
+
+			one.setName(nameSwap);
+			one.decideColourScheme(colourSwap);
+
+		}
+
+		Sleep(Die::roll(100) + 500);
+
+	} while (nOne == nTwo);
+
 
 	//While neither player has won keep playing
 	while (!gM.gameIsWon(&one, &two))
 	{	
+
+		//Clear the console ready for next round
+		con.clear();
+
 		int startingPos;
 
 		gM.beGameMaster();
@@ -161,111 +203,106 @@ int main()
 			one.setTiredness(0);
 			one.setIsInjured(false);
 		}
-
-
+		
 		//If not playing advanced more (i.e basic mode) ignore tiredness/injury
 		if (!two.getIsAdvanced())
 		{
 			two.setTiredness(0);
 			two.setIsInjured(0);
 		}
-
 		//So long as player two hasn't won - player 2 take a turn
-		if (!two.isWinner())
-		{
-			startingPos = one.getPos();
-
-			gM.bePlayer(&one);
-			gM.typeWrite(one.getName() + " is on tile " + to_string(one.getPos()));
-			gM.typeWrite(" and rolled a " + to_string(one.takeTurn()) + " ");
-			
-			one.setTiredness(0);
-			one.setIsInjured(false);
-
-			//Has gone backwards - so taken a snake
-			if (startingPos > one.getPos())
+			if (!two.isWinner())
 			{
-				gM.beGameMaster(gM.SNAKE);
-				gM.typeWrite("-SNAKE-");
-
-
-				one.setIsInjured(true);
+				startingPos = one.getPos();
 
 				gM.bePlayer(&one);
-				gM.typeWrite(" ");
+				gM.typeWrite(one.getName() + " is on tile " + to_string(one.getPos()));
+				gM.typeWrite(" and rolled a " + to_string(one.takeTurn()) + " ");
+
+				one.setTiredness(0);
+				one.setIsInjured(false);
+
+				//Has gone backwards - so taken a snake
+				if (startingPos > one.getPos())
+				{
+					gM.beGameMaster(gM.SNAKE);
+					gM.typeWrite("-SNAKE-");
+
+
+					one.setIsInjured(true);
+
+					gM.bePlayer(&one);
+					gM.typeWrite(" ");
+				}
+				//Moved more than 6 - so has hit a ladder
+				else if (one.getPos() > startingPos + 6)
+				{
+					gM.beGameMaster(gM.LADDER);
+					gM.typeWrite("-LADDER-");
+
+					one.setTiredness(int((one.getPos() - startingPos) / 5));
+
+					gM.bePlayer(&one);
+					gM.typeWrite(" ");
+				}
+				else
+				{
+					gM.bePlayer(&one);
+				}
+
+
+				gM.typeWrite("so is now on tile: " + to_string(one.getPos()));
+				Sleep(Die::roll(100) + 500);
+				cout << endl;
 			}
-			//Moved more than 6 - so has hit a ladder
-			else if (one.getPos() > startingPos + 6)
-			{
-				gM.beGameMaster(gM.LADDER);
-				gM.typeWrite("-LADDER-");
-
-				one.setTiredness(int((one.getPos() - startingPos) / 5));
-
-				gM.bePlayer(&one);
-				gM.typeWrite(" ");
-			}
-			else
-			{
-				gM.bePlayer(&one);
-			}
-
-
-			gM.typeWrite("so is now on tile: " + to_string(one.getPos()));
-			Sleep(Die::roll(100) + 500);
-			cout << endl;
-		}
 
 		//So long as player two hasn't won - take a turn
-		if (!one.isWinner())
-		{
-			startingPos = two.getPos();
-
-			gM.bePlayer(&two);
-			gM.typeWrite(two.getName() + " is on tile " + to_string(two.getPos()));
-			gM.typeWrite(" and rolled a " + to_string(two.takeTurn()) + " ");
-
-			two.setTiredness(0);
-			two.setIsInjured(false);
-
-			//Has gone backwards - so taken a snake
-			if (startingPos > two.getPos())
+			if (!one.isWinner())
 			{
-				gM.beGameMaster(gM.SNAKE);
-				gM.typeWrite("-SNAKE-");
-
-				two.setIsInjured(true);
+				startingPos = two.getPos();
 
 				gM.bePlayer(&two);
-				gM.typeWrite(" ");
-			}
-			//Moved more than 6 - so has hit a ladder
-			else if (two.getPos() > startingPos + 6)
-			{
-				gM.beGameMaster(gM.LADDER);
-				gM.typeWrite("-LADDER-");
+				gM.typeWrite(two.getName() + " is on tile " + to_string(two.getPos()));
+				gM.typeWrite(" and rolled a " + to_string(two.takeTurn()) + " ");
 
-				two.setTiredness(int((one.getPos() - startingPos) / 5));
+				two.setTiredness(0);
+				two.setIsInjured(false);
 
-				gM.bePlayer(&two);
-				gM.typeWrite(" ");
-			}
-			else
-			{
-				gM.bePlayer(&two);
-			}
+				//Has gone backwards - so taken a snake
+				if (startingPos > two.getPos())
+				{
+					gM.beGameMaster(gM.SNAKE);
+					gM.typeWrite("-SNAKE-");
 
-			gM.typeWrite("so is now on tile: " + to_string(two.getPos()));
-			Sleep(Die::roll(100) + 500);
-		}
+					two.setIsInjured(true);
+
+					gM.bePlayer(&two);
+					gM.typeWrite(" ");
+				}
+				//Moved more than 6 - so has hit a ladder
+				else if (two.getPos() > startingPos + 6)
+				{
+					gM.beGameMaster(gM.LADDER);
+					gM.typeWrite("-LADDER-");
+
+					two.setTiredness(int((one.getPos() - startingPos) / 5));
+
+					gM.bePlayer(&two);
+					gM.typeWrite(" ");
+				}
+				else
+				{
+					gM.bePlayer(&two);
+				}
+
+				gM.typeWrite("so is now on tile: " + to_string(two.getPos()));
+				Sleep(Die::roll(100) + 500);
+			}
 
 
 		//Leave time to read the result
 		Sleep(500);
 
-		//Clear the console ready for next round
-		con.clear();
-		
 		
 		//Check if the game has been going on for longer than 4 turns
 		//then on alternate turns speed up within limit

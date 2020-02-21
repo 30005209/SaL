@@ -46,6 +46,7 @@ private:
 	//Injury
 	bool injured;
 
+
 public:
 
 	//Cannot have a player without a board or a console
@@ -70,7 +71,6 @@ public:
 
 	bool isInjured(void);
 	int howTired(void);
-
 };
 
 #endif
