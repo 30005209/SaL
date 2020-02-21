@@ -13,7 +13,11 @@ public:
 	gameManager();
 	~gameManager();
 
+	enum { DEFAULT = 0, SNAKE = 1, LADDER = 2};
+
+
 	bool gameIsWon(Player*, Player*);
+	void beGameMaster(int);
 	void beGameMaster(void);
 	void bePlayer(Player*);
 	void randomSlow(void);

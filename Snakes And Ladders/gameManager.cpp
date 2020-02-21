@@ -30,11 +30,29 @@ bool gameManager::gameIsWon(Player *a, Player *b)
 	}
 }
 
-void gameManager::beGameMaster(void)
+void gameManager::beGameMaster(int type)
 {
 	static Console con;
 
-	con.setColour(Console::BLACK, Console::YELLOW);
+	switch (type)
+	{
+	case DEFAULT:
+		con.setColour(Console::BLACK, Console::WHITE);
+		break;
+
+	case SNAKE:
+		con.setColour(Console::RED, Console::WHITE);
+		break;
+
+	case LADDER:
+		con.setColour(Console::BLUE, Console::WHITE);
+		break;
+	}
+}
+
+void gameManager::beGameMaster(void)
+{
+	beGameMaster(DEFAULT);
 }
 
 void gameManager::bePlayer(Player* player)
