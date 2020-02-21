@@ -1,21 +1,58 @@
-struct Tile
-	int self
-	Tile* next;
+structure Tile
+	int position
+	int link
 
-Player
-	public:
-	constructor(string)
-	Tile*
-	private:
+vector<tile> board with a size of 25
 
-Die
-	public:
-	contructor
-		size = 6
+set window title to "Snakes and Ladders"
+set window postion to top left (0,0)
+set window size to allow for extra space (150, 750)
+
+while ( i <= boardsize)
+	add { position = i, link = NULL}
+
+set links for snakes and ladders
+
+set colourscheme to gameMaster
+
+while(playerOne.name == playerTwo.name)
 	
-	INT size
-	private:
+	OUTPUT what would you like to be called player one
+	INPUT playerOne.name
 
-roll(Die)
+	OUTPUT what would you like tobe called player two
+	INPUT playerTwo.name
+	
+	endif playerOne.name != playerTwo.name
 
-CHANGE TO VECTORS NOT CLASSES
+nOne
+nTwo
+
+do
+	nOne = RNG
+	nTwo = RNG
+while (nOne == nTwo)
+
+if nTwo > nOne
+	playerSwap = playerOne
+	playerOne = playerTwo
+	playerTwo = playerSwap
+
+
+while ((!playerOne.win() || !playerTwo.win()))
+	playerOne.turn()
+	playerTwo.turn()
+
+if playerOne.win()
+	OUTPUT playerOne.name has won
+else if	playerTwo.win()
+	OUTPUT playerTwo.name has won
+
+
+
+player.turn()
+	int movement = RNG(1,6)
+	if player.pos + movement < board end
+		player.pos += movement
+	if player.pos.haslink
+		player.pos = player.link
