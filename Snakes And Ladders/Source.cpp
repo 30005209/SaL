@@ -343,7 +343,7 @@ int main()
 		outFile.open("Winner.txt");
 		outFile << one.getName() << " with:  " << one.getTurns();
 		gM.bePlayer(&one);
-		gM.typeWrite("And the winner is..." + one.getName() + " in " + to_string(one.getTurns()) + " turns");
+		gM.typeWrite("\nAnd the winner is..." + one.getName() + " in " + to_string(one.getTurns()) + " turns");
 	}
 
 	//Otherwise if player two has won - declare them the victor
@@ -352,7 +352,7 @@ int main()
 		outFile.open("Winner.txt");
 		outFile << two.getName() << " with:  " << two.getTurns();
 		gM.bePlayer(&two);
-		gM.typeWrite("And the winner is..." + two.getName() + " in " + to_string(two.getTurns()) + " turns");
+		gM.typeWrite("\nAnd the winner is..." + two.getName() + " in " + to_string(two.getTurns()) + " turns");
 	}
 
 	cin.ignore();
