@@ -55,21 +55,49 @@ public:
 
 	//Taking a turn
 	int takeTurn(void);
+	
+	//See if player has won
 	bool isWinner(void);
+	
+	//Get the position of the current tile
 	int getPos(void);
+
+	//Get the colour of the player (foreground)
 	Console::COLOUR getFore(void);
+	
+	//Decide on colour scheme if colour not given
 	void decideColourScheme(void);
+
+	//Set colour scheme if colour given
 	void decideColourScheme(Console::COLOUR);
+
+	//Set the name of the  player
 	void setName(string);
+
+	//Get the name of the player
 	string getName(void);
+	
+	//Get how many turns they have had
 	int getTurns(void);
+
+
+	//Set whether to make them play on advanced mode
 	void setIsAdvanced(bool);
+
+	//See if they are on advanced mode
 	bool getIsAdvanced(void);
 
+
+	//Set injury
 	void setIsInjured(bool);
+
+	//See if injured
+	bool isInjured(void);
+	   
+	//Set how tired they are
 	void setTiredness(int);
 
-	bool isInjured(void);
+	//See how tired they are
 	int howTired(void);
 };
 

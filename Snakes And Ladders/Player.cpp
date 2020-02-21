@@ -2,17 +2,31 @@
 
 Player::Player(vector<Tile>* board, Console* console)
 {
+	//Set the board pointer
 	this->board = board;
+	
+	//Set their position to the start of the board
 	this->pos = board->begin();
 
+	//Set their turn number to 0
 	this->turnNo = 0;
+
+	//Make their name "unset"
 	setName("unset");
 
+	//Give them the console pointer
 	this->con = console;
+
+	//Decide on a random colour scheme
 	decideColourScheme();
 
+	//Set advanced to false by default
 	setIsAdvanced(false);
+
+	//Set tiredness to 0 by default
 	setTiredness(0);
+
+	//Set injury to false by default
 	setIsInjured(false);
 }
 
@@ -26,7 +40,7 @@ int Player::takeTurn(void)
 	//Produce a roll (d6)
 	int result = Die::roll();
 
-
+	//Check if tired if so adjust die within range
 	if (howTired())
 	{
 		result = result - tiredness;
@@ -51,6 +65,10 @@ int Player::takeTurn(void)
 		{
 			pos = board->begin() + pos->link;
 		}
+	}
+	else
+	{
+		result = 0;
 	}
 	turnNo++;
 

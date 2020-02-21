@@ -15,11 +15,20 @@ using std::to_string;
 
 int main()
 {
+	//Set up needed info for reading files
 	std::ifstream inFile;
 	std::ofstream outFile;
+
+	//Intialise a gameManager
 	gameManager gM;
+
+	//Make a console
 	static Console con;
+
+	//Set the board size
 	const int BOARD_SIZE = 25;
+	
+	//Make a board
 	vector<Tile> board;
 	
 	//Set the title to be Snakes and Ladders
@@ -58,6 +67,7 @@ int main()
 	cin.get();
 	cin.clear();
 
+	//Wipe board completly
 	con.setColour(Console::BLACK, Console::BLACK);
 	con.clear();
 	gM.beGameMaster();
@@ -71,43 +81,36 @@ int main()
 		gM.typeWrite("What would you like to be called Player 1:");
 
 		string name;
-
 		gM.bePlayer(&one);
-
 		gM.typeWrite(" ");
-
 		std::cin >> name;
-
 		one.setName(name);
 
-
 		gM.beGameMaster();
-
 		gM.typeWrite("What would you like to be called Player 2:");
 
-
 		gM.bePlayer(&two);
-
 		gM.typeWrite(" ");
-
 		std::cin >> name;
-
 		two.setName(name);
 
 		con.clear();
 	}
 
-	//
+	//Ignore anything currently in the buffer
 	cin.ignore();
 
+	//Decide whethere player 1 wants to play in advanced mode
 	string answer = "n";
 	gM.bePlayer(&one);
 	gM.typeWrite(one.getName() + " would you like to play in advanced mode (y/n): ");
 	cin >> answer;
 	one.setIsAdvanced(answer == "y");
 	
+	//Ignore anything else in the buffer
 	cin.ignore();
-
+	
+	//Decide whethere player 2 wants to play in advanced mode
 	gM.bePlayer(&two);
 	answer = "n";
 	gM.typeWrite(two.getName() + " would you like to play in advanced mode (y/n): ");
@@ -117,6 +120,7 @@ int main()
 
 	if (one.getIsAdvanced() || two.getIsAdvanced())
 	{
+		//Explain rules for snakes
 		con.setColour(Console::BLACK, Console::BLACK);
 		con.clear();
 		gM.beGameMaster();
@@ -131,6 +135,7 @@ int main()
 		con.clear();
 		gM.beGameMaster();
 
+		//Explain rules for ladders
 		gM.typeWrite("Also you will get tired from Ladders\n");
 		gM.typeWrite("Every 5 tiles you skip will add a -1 to your next roll (min of 0)\n");
 
@@ -159,6 +164,7 @@ int main()
 		gM.bePlayer(&two);
 		gM.typeWrite(two.getName() + " you got a " + to_string(nTwo) +  "\n");
 
+		//If they roll the same roll again
 		if (nOne == nTwo)
 		{
 			Sleep(Die::roll(100) + 500);
@@ -167,6 +173,7 @@ int main()
 			gM.typeWrite("Lets try that again..\n");
 		}
 
+		//If player two rolled larger swap their info
 		if (nTwo > nOne)
 		{
 			string nameSwap = two.getName();
@@ -182,7 +189,7 @@ int main()
 
 		Sleep(Die::roll(100) + 500);
 
-	} while (nOne == nTwo);
+	} while (nOne == nTwo); //Don't stop rolling to go first until they have different rolls
 
 
 	//While neither player has won keep playing
@@ -191,7 +198,21 @@ int main()
 
 		//Clear the console ready for next round
 		con.clear();
+	
+		//Check if the game has been going on for longer than 4 turns
+		//then on alternate turns speed up within limit
+		if (one.getTurns() > 4 && one.getTurns() % 2
+			&& !(one.isWinner() || two.isWinner()))
+		{
+			gM.increaseSpeed();
 
+			Sleep(Die::roll(100) + 500);
+
+			con.setColour(Console::BLACK, Console::BLACK);
+			con.clear();
+			gM.beGameMaster();
+		}
+		//Reset the relative starting positions
 		int startingPos;
 
 		gM.beGameMaster();
@@ -217,7 +238,11 @@ int main()
 
 				gM.bePlayer(&one);
 				gM.typeWrite(one.getName() + " is on tile " + to_string(one.getPos()));
-				gM.typeWrite(" and rolled a " + to_string(one.takeTurn()) + " ");
+				gM.typeWrite(" and rolled a ");
+
+				//Save roll score to be used for snake/ladder calculation
+				int roll = one.takeTurn();
+				gM.typeWrite(to_string(roll) + " ");
 
 				one.setTiredness(0);
 				one.setIsInjured(false);
@@ -226,7 +251,7 @@ int main()
 				if (startingPos > one.getPos())
 				{
 					gM.beGameMaster(gM.SNAKE);
-					gM.typeWrite("-SNAKE-");
+					gM.typeWrite("-SNAKE on tile " + to_string(startingPos + roll));
 
 
 					one.setIsInjured(true);
@@ -238,7 +263,7 @@ int main()
 				else if (one.getPos() > startingPos + 6)
 				{
 					gM.beGameMaster(gM.LADDER);
-					gM.typeWrite("-LADDER-");
+					gM.typeWrite("-LADDER " + to_string(startingPos + roll));
 
 					one.setTiredness(int((one.getPos() - startingPos) / 5));
 
@@ -263,7 +288,12 @@ int main()
 
 				gM.bePlayer(&two);
 				gM.typeWrite(two.getName() + " is on tile " + to_string(two.getPos()));
-				gM.typeWrite(" and rolled a " + to_string(two.takeTurn()) + " ");
+				gM.typeWrite(" and rolled a ");
+
+				//Save roll score to be used for snake/ladder calculation
+				int roll = two.takeTurn();
+				gM.typeWrite(to_string(roll) + " ");
+
 
 				two.setTiredness(0);
 				two.setIsInjured(false);
@@ -272,7 +302,7 @@ int main()
 				if (startingPos > two.getPos())
 				{
 					gM.beGameMaster(gM.SNAKE);
-					gM.typeWrite("-SNAKE-");
+					gM.typeWrite("-SNAKE on tile " + to_string(startingPos + roll));
 
 					two.setIsInjured(true);
 
@@ -283,7 +313,7 @@ int main()
 				else if (two.getPos() > startingPos + 6)
 				{
 					gM.beGameMaster(gM.LADDER);
-					gM.typeWrite("-LADDER-");
+					gM.typeWrite("-LADDER " + to_string(startingPos + roll));
 
 					two.setTiredness(int((one.getPos() - startingPos) / 5));
 
@@ -304,13 +334,7 @@ int main()
 		Sleep(500);
 
 		
-		//Check if the game has been going on for longer than 4 turns
-		//then on alternate turns speed up within limit
-		if (one.getTurns() > 4 && one.getTurns() %2 
-			&& !(one.isWinner() || two.isWinner()))
-		{
-			gM.increaseSpeed();
-		}
+	
 	}
 
 	//If player one won - declare them the victor
