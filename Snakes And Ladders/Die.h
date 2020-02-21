@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _Die
+#define _Die
 #include <random>
 
 class Die
@@ -15,3 +16,4 @@ public:
 	static int roll(int);
 };
 
+#endif _Die

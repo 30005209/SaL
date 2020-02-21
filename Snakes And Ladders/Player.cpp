@@ -1,6 +1,5 @@
 #include "Player.h"
 
-
 Player::Player(vector<Tile>* board, Console* console)
 {
 	this->board = board;

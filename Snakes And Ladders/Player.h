@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _PLAYER
+#define _PLAYER
+
 #include "Die.h"
 #include <iostream>
 #include "console.h"
@@ -53,3 +55,4 @@ public:
 	int getTurns(void);
 };
 
+#endif _PLAYER

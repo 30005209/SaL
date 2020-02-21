@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _gameManager
+#define _gameManager
+
 #include "Player.h"
 #include <iostream>
 
@@ -29,3 +31,4 @@ public:
 
 };
 
+#endif // !_gameManager
