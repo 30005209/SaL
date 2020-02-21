@@ -96,6 +96,9 @@ void gameManager::increaseSpeed(void)
 {
 	if (getSpeedBase() > 40)
 	{
+		this->beGameMaster();
+		this->typeWrite("SPEED UP\n");
+	
 		gameSpeedBase -= 40;
 	}
 }

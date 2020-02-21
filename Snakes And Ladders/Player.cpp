@@ -6,10 +6,14 @@ Player::Player(vector<Tile>* board, Console* console)
 	this->pos = board->begin();
 
 	this->turnNo = 0;
-	this->name = "unset";
+	setName("unset");
 
 	this->con = console;
 	decideColourScheme();
+
+	setIsAdvanced(false);
+	setTiredness(0);
+	setIsInjured(false);
 }
 
 
@@ -22,19 +26,32 @@ int Player::takeTurn(void)
 	//Produce a roll (d6)
 	int result = Die::roll();
 
-	//If the result + their current position is less than the last tile
-	//Allow the result of the die to be added
-	if (pos->num + result <= (board->end()-1)->num)
+
+	if (howTired())
 	{
-		pos += result;
-	}
-	
-	//If the link of the tile has been set (not a 0) move there
-	if (pos->link)
-	{
-		pos = board->begin() + pos->link;
+		result = result - tiredness;
+
+		if (result < 0)
+		{
+			result = 0;
+		}
 	}
 
+	if (!isInjured())
+	{
+		//If the result + their current position is less than the last tile
+		//Allow the result of the die to be added
+		if (pos->num + result <= (board->end() - 1)->num)
+		{
+			pos += result;
+		}
+
+		//If the link of the tile has been set (not a 0) move there
+		if (pos->link)
+		{
+			pos = board->begin() + pos->link;
+		}
+	}
 	turnNo++;
 
 	//Return the dice roll
@@ -81,4 +98,34 @@ string Player::getName(void)
 int Player::getTurns(void)
 {
 	return turnNo;
+}
+
+void Player::setIsAdvanced(bool setting)
+{
+	this->isAdvanced = setting;
+}
+
+bool Player::getIsAdvanced(void)
+{
+	return isAdvanced;
+}
+
+void Player::setIsInjured(bool setting)
+{
+	injured = setting;
+}
+
+void Player::setTiredness(int amount)
+{
+	tiredness = amount;
+}
+
+bool Player::isInjured(void)
+{
+	return injured;
+}
+
+int Player::howTired(void)
+{
+	return tiredness;
 }

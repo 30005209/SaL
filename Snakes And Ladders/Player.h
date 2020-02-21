@@ -37,6 +37,15 @@ private:
 	//Number of turns taken
 	int turnNo;
 
+	//Tracks whether playing with tiredness / injury
+	bool isAdvanced;
+
+	//Tiredness
+	int tiredness;
+
+	//Injury
+	bool injured;
+
 public:
 
 	//Cannot have a player without a board or a console
@@ -53,6 +62,15 @@ public:
 	void setName(string);
 	string getName(void);
 	int getTurns(void);
+	void setIsAdvanced(bool);
+	bool getIsAdvanced(void);
+
+	void setIsInjured(bool);
+	void setTiredness(int);
+
+	bool isInjured(void);
+	int howTired(void);
+
 };
 
 #endif
