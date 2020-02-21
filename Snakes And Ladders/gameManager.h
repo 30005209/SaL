@@ -31,4 +31,4 @@ public:
 
 };
 
-#endif // !_gameManager
+#endif

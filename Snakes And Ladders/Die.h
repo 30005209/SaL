@@ -16,4 +16,4 @@ public:
 	static int roll(int);
 };
 
-#endif _Die
+#endif 

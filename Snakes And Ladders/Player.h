@@ -55,4 +55,4 @@ public:
 	int getTurns(void);
 };
 
-#endif _PLAYER
+#endif

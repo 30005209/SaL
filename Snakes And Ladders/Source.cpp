@@ -22,6 +22,10 @@ int main()
 	const int BOARD_SIZE = 25;
 	vector<Tile> board;
 
+	//Set the colourscheme to gameMaster
+
+	gM.beGameMaster();
+
 	//Set the title to be Snakes and Ladders
 	con.setWindowTitle("Snakes and Ladders");
 	con.setWindowPosition(0, 0);
@@ -76,17 +80,46 @@ int main()
 
 	//While neither player has won keep playing
 	while (!gM.gameIsWon(&one, &two))
-	{		
+	{	
+		int startingPos;
+
 		gM.beGameMaster();
 		gM.typeWrite(one.getName() + " Vs " + two.getName() + " Round: " + to_string(one.getTurns()+1) + "\n");
 
 		//So long as player two hasn't won - player 2 take a turn
 		if (!two.isWinner())
 		{
+			startingPos = one.getPos();
+
 			gM.bePlayer(&one);
 			gM.typeWrite(one.getName() + " is on tile " + to_string(one.getPos()));
-			gM.typeWrite(" and rolled a " + to_string(one.takeTurn()));
-			gM.typeWrite(" so is now on tile: " + to_string(one.getPos()));
+			gM.typeWrite(" and rolled a " + to_string(one.takeTurn()) + " ");
+			
+			//Has gone backwards - so taken a snake
+			if (startingPos > one.getPos())
+			{
+				gM.beGameMaster(gM.SNAKE);
+				gM.typeWrite("-SNAKE-");
+
+				gM.bePlayer(&one);
+				gM.typeWrite(" ");
+			}
+			//Moved more than 6 - so has hit a ladder
+			else if (one.getPos() > startingPos + 6)
+			{
+				gM.beGameMaster(gM.LADDER);
+				gM.typeWrite("-LADDER-");
+
+				gM.bePlayer(&one);
+				gM.typeWrite(" ");
+			}
+			else
+			{
+				gM.bePlayer(&one);
+			}
+
+
+			gM.typeWrite("so is now on tile: " + to_string(one.getPos()));
 			Sleep(Die::roll(100) + 500);
 			cout << endl;
 		}
@@ -94,10 +127,36 @@ int main()
 		//So long as player two hasn't won - take a turn
 		if (!one.isWinner())
 		{
+			startingPos = two.getPos();
 			gM.bePlayer(&two);
 			gM.typeWrite(two.getName() + " is on tile " + to_string(two.getPos()));
-			gM.typeWrite(" and rolled a "+ to_string(two.takeTurn()));
-			gM.typeWrite(" so is now on tile: " + to_string(two.getPos()));
+			gM.typeWrite(" and rolled a " + to_string(two.takeTurn()) + " ");
+
+
+			//Has gone backwards - so taken a snake
+			if (startingPos > two.getPos())
+			{
+				gM.beGameMaster(gM.SNAKE);
+				gM.typeWrite("-SNAKE-");
+
+				gM.bePlayer(&two);
+				gM.typeWrite(" ");
+			}
+			//Moved more than 6 - so has hit a ladder
+			else if (two.getPos() > startingPos + 6)
+			{
+				gM.beGameMaster(gM.LADDER);
+				gM.typeWrite("-LADDER-");
+
+				gM.bePlayer(&two);
+				gM.typeWrite(" ");
+			}
+			else
+			{
+				gM.bePlayer(&two);
+			}
+
+			gM.typeWrite("so is now on tile: " + to_string(two.getPos()));
 			Sleep(Die::roll(100) + 500);
 		}
 
